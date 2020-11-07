@@ -1,6 +1,6 @@
 import socket
 import sys
-import thread
+import _thread
 
 print("> Blochat Server Client activated.")
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,7 +43,7 @@ while True:
   conn, addr = server.accept()
   clients.append(conn)
   print(f"{addr[0]} joined the server.")
-  thread.start_new_thread(clientThread(conn, addr))
+  _thread.start_new_thread(clientThread(conn, addr))
 
 conn.close()
 server.close()
