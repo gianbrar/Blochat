@@ -1,6 +1,9 @@
 from tkinter import *
 import socket
-import playsound
+if sys.platform.startswith("linux"):
+  import playsound
+else:
+  import winsound
 
 def click():
     server_ip = textbloch.get()
@@ -22,7 +25,10 @@ window = Tk()
 window.title("Blochat")
 window.configure(background="black")
 def invalidip(err):
-  playsound.playsound("CTX/err.wav")
+  if sys.platform.startswith("linux"):
+    playsound.playsound("CTX/err.wav")
+  else:
+    winsound.PlaySound("CTX/err.wav")
   Label(
     window,
     text=err,
