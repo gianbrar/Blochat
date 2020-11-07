@@ -8,7 +8,10 @@ else:
 import select
 
 global serverName
-
+ 
+def openNewWindow():
+  newWindow = Toplevel(window)
+  newWindow.title(serverName)
 def click():
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -22,6 +25,7 @@ def click():
       invalidip()
       return
     first = True
+    openNewWindow()
     while True:
       sockets = [None, server]
       readS, writeS, errS = select.select(sockets,[],[])
@@ -31,7 +35,7 @@ def click():
           if first == True:
             first = False
             serverName = msg[msg.find(":") + 1:]
-          msg = Socket.recv(2048)
+          msg = Socket.recv(2048) 
           outputMessage(msg)
         else:
           msg = getUserMessage()
@@ -92,4 +96,4 @@ textbloch.grid(row=3, column=0, sticky=N)
 Button(
     window, text="Join", width=10, command=click).grid(
         row=3, column=1, sticky=W)
-
+      
