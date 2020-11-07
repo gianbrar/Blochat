@@ -45,4 +45,3 @@ textbloch.grid(row=2, column=0, sticky=N)
 Button(
     window, text="Join", width=10, command=click).grid(
         row=2, column=1, sticky=N)
-window.mainloop()

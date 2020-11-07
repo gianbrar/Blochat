@@ -1,5 +1,4 @@
 import socket
-import sys
 import _thread
 
 print("> Blochat Server Client activated.")
@@ -11,10 +10,7 @@ clients = []
 name = input("> Create server name\n> ")
 if name == "":
   name = socket.gethostname()
-if len(sys.argv) > 1:
-  port = int(sys.argv[1]) 
-else:
-  port = input("> Enter port #\n> ")
+port = input("> Enter port #\n> ")
 
 print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
 
@@ -41,11 +37,9 @@ def clientThread(conn, addr):
     except:
       continue
 
-while True:
-  conn, addr = server.accept()
-  clients.append(conn)
-  print(f"{addr[0]} joined the server.")
-  _thread.start_new_thread(clientThread(conn, addr))
-
-conn.close()
-server.close()
+def runServer():
+  while True:
+    conn, addr = server.accept()
+    clients.append(conn)
+    print(f"{addr[0]} joined the server.")
+    _thread.start_new_thread(clientThread(conn, addr))
