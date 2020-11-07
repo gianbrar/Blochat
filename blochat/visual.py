@@ -17,7 +17,7 @@ def click():
       return
     server_port = int(server_ip[server_ip.find(':') + 1:])
     try:
-      server.connect((server_ip, server_port))
+        server.connect((server_ip[:server_ip.find(':')], server_port))
     except:
       invalidip()
       return
