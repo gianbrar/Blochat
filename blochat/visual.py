@@ -6,6 +6,8 @@ if sys.platform.startswith("linux"):
 else:
   import winsound
 
+global serverName
+
 def click():
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,14 +20,18 @@ def click():
     except:
       invalidip()
       return
+    first = True
     while True:
       sockets = [None, server]
       readS, writeS, errS = select.select(sockets_list,[],[])
       for Socket in readS:
         if Socket == server:
           msg = Sock.recv(2048)
-          outputMessage(msg)
+          if first == True:
+            first = False
+            serverName = msg[msg.find(":") + 1:]
         else:
+          msg = getUserMessage()
           server.send(msg)
           outputMessage("> [ YOU ]: " + msg)
       
@@ -34,6 +40,9 @@ def launchserver():
   import blochat.server
 
 def outputMessage(msg):
+  print("test")
+
+def getUserMessage():
   print("test")
 
 window = Tk()
