@@ -8,6 +8,8 @@ def click():
     entered_text = textbloch.get()
     print(entered_text)
     ipcheck()
+def launchserver():
+  print("Launched")
 def ipcheck():
   """server.py validate IP"""
   """if ip is correct:"""
