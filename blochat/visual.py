@@ -8,13 +8,14 @@ else:
 def click():
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    if server_ip.find(':') == -1 or server_ip.length() - 1 == server_ip.find(':'):
+    if server_ip.find(':') == -1 or len(server_ip) - 1 == server_ip.find(':'):
       invalidip("No port found.")
+      return
     server_port = int(server_ip[server_ip.find(':') + 1:])
     try:
       server.connect((server_ip, server_port))
     except:
-      invalidip("ERROR: Faulty hostname and/or port.")
+      invalidip("ERROR: Faulty IP and/or port.")
 
 def launchserver():
   import blochat.server
