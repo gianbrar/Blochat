@@ -33,7 +33,14 @@ Label(
     fg="white",
     font="none 20 bold").grid(
         row=1, column=0, sticky=W)
-textbloch = Entry(window, width=40, bg="black")
+
+tBg = ""
+if sys.platform.startswith("linux"):
+  tBg = "black"
+else:
+  tBg = "white"
+
+textbloch = Entry(window, width=40, bg=tBg)
 textbloch.grid(row=2, column=0, sticky=N)
 Button(
     window, text="Join", width=10, command=click).grid(
