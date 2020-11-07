@@ -1,5 +1,6 @@
 from tkinter import *
 import socket
+import sys
 if sys.platform.startswith("linux"):
   import playsound
 else:
@@ -9,34 +10,47 @@ def click():
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     if server_ip.find(':') == -1 or len(server_ip) - 1 == server_ip.find(':'):
-      invalidip("No port found.")
+      invalidip()
       return
     server_port = int(server_ip[server_ip.find(':') + 1:])
     try:
       server.connect((server_ip, server_port))
     except:
-      invalidip("ERROR: Faulty IP and/or port.")
+      invalidip()
+      return
+    while True:
+      sockets = [None, server]
+      readS, writeS, errS = select.select(sockets_list,[],[])
+      for Socket in readS:
+        if Socket == server:
+          msg = Sock.recv(2048)
+          outputMessage(msg)
+        else:
+          server.send(msg)
+          outputMessage("> [ YOU ]: " + msg)
+      
 
 def launchserver():
   import blochat.server
 
-
+def outputMessage(msg):
+  print("test")
 
 window = Tk()
 window.title("Blochat")
 window.configure(background='#1D3557')
-def invalidip(err):
-  if sys.platform.startswith("linux"):
-    playsound.playsound("CTX/err.wav")
-  else:
-    winsound.PlaySound("CTX/err.wav", winsound.SND_FILENAME)
+def invalidip():
   Label(
     window,
-    text=err,
+    text="Invalid IP or Port",
     bg="#1D3557",
     fg="red",
     font="none 14 bold").grid(
         row=4, column=0, sticky=N)
+  if sys.platform.startswith("linux"):
+    playsound.playsound("CTX/err.wav")
+  else:
+    winsound.PlaySound("CTX/err.wav", winsound.SND_FILENAME)
 Button(
     window, text="Server Mode", width=10, command=launchserver).grid(
         row=0, column=10, sticky=W)
