@@ -20,6 +20,7 @@ try:
   server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
 except:
   print("ERROR: Faulty hostname and/or port.")
+  exit()
 
 server.listen(10)
 def clientThread(conn, addr):

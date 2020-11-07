@@ -1,20 +1,20 @@
 from tkinter import *
-
-entered_text = ""
+import socket
 
 
 def click():
-    global entered_text
-    entered_text = textbloch.get()
-    print(entered_text)
-    ipcheck()
+    server_ip = textbloch.get()
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    if server_ip.indexOf(':') == -1 or server_ip.length() - 1 == server_ip.indexOf(':'):
+      invalidip("No port found.")
+    server_port = int(server_ip[server_ip.indexOf(':') + 1:])
+    try:
+      server.connect((server_ip, server_port))
+    except:
+      invalidip("ERROR: Faulty hostname and/or port.")
+
 def launchserver():
   import blochat.server
-def ipcheck():
-  """server.py validate IP"""
-  """if ip is correct:"""
-  print("Checked")
-  """else:"""
 
 
 window = Tk()
