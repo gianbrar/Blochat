@@ -10,13 +10,13 @@ clients = []
 name = input("> Create server name\n> ")
 if name == "":
   name = socket.gethostname()
-if len(sys.argv > 1):
+if len(sys.argv) > 1:
   port = int(sys.argv[1]) 
 else:
   port = input("> Enter port #\n> ")
 
 try:
-  server.bind((socket.gethostname(), port))
+  server.bind((socket.gethostname(), int(port)))
 except:
   print("ERROR: Faulty hostname and/or port.")
 
