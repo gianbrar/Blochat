@@ -9,7 +9,7 @@ def click():
     print(entered_text)
     ipcheck()
 def launchserver():
-  print("Launched")
+  import server
 def ipcheck():
   """server.py validate IP"""
   """if ip is correct:"""
