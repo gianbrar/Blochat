@@ -1,12 +1,15 @@
 import socket
 import _thread
 
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+name = ""
+clients = []
+
 def initServer():
+  global name
   print("> Blochat Server Client activated.")
-  server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
   port = 0
-  clients = []
 
   name = input("> Create server name\n> ")
   if name == "":
@@ -22,6 +25,7 @@ def initServer():
 
 server.listen(10)
 def clientThread(conn, addr):
+  global clients
   conn.send(f"Entered chatroom: {name}")
   while True:
     try:
@@ -39,6 +43,7 @@ def clientThread(conn, addr):
       continue
 
 def runServer():
+  global clients
   initServer()
   while True:
     conn, addr = server.accept()
