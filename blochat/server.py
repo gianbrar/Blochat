@@ -1,23 +1,24 @@
 import socket
 import _thread
 
-print("> Blochat Server Client activated.")
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-port = 0
-clients = []
+def initServer():
+  print("> Blochat Server Client activated.")
+  server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+  server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+  port = 0
+  clients = []
 
-name = input("> Create server name\n> ")
-if name == "":
-  name = socket.gethostname()
-port = input("> Enter port #\n> ")
+  name = input("> Create server name\n> ")
+  if name == "":
+    name = socket.gethostname()
+  port = input("> Enter port #\n> ")
 
-print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
+  print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
 
-try:
-  server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
-except:
-  print("ERROR: Faulty hostname and/or port.")
+  try:
+    server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
+  except:
+    print("ERROR: Faulty hostname and/or port.")
 
 server.listen(10)
 def clientThread(conn, addr):
@@ -38,6 +39,7 @@ def clientThread(conn, addr):
       continue
 
 def runServer():
+  initServer()
   while True:
     conn, addr = server.accept()
     clients.append(conn)
