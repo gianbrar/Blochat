@@ -9,7 +9,7 @@ def click():
     print(entered_text)
     ipcheck()
 def launchserver():
-  import server
+  import blochat.server
 def ipcheck():
   """server.py validate IP"""
   """if ip is correct:"""

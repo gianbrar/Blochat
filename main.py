@@ -13,7 +13,7 @@ from blochat.visual import *
 
 if len(sys.argv) > 1:
   if sys.argv[1] == "-s" or sys.argv[1] == "--server":
-    import blochat.server
+    import blochat.blochat.server
   elif sys.argv[1] == "-u" or sys.argv[1] == "--user":
     window.mainloop()
   else:
