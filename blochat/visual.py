@@ -5,12 +5,9 @@ if sys.platform.startswith("linux"):
   import playsound
 else:
   import winsound
-
-<<<<<<< Updated upstream
-global serverName
-=======
 import select
->>>>>>> Stashed changes
+
+global serverName
 
 def click():
     server_ip = textbloch.get()
@@ -30,15 +27,12 @@ def click():
       readS, writeS, errS = select.select(sockets,[],[])
       for Socket in readS:
         if Socket == server:
-<<<<<<< Updated upstream
           msg = Sock.recv(2048)
           if first == True:
             first = False
             serverName = msg[msg.find(":") + 1:]
-=======
           msg = Socket.recv(2048)
           outputMessage(msg)
->>>>>>> Stashed changes
         else:
           msg = getUserMessage()
           server.send(msg)
