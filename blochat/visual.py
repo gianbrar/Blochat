@@ -7,9 +7,10 @@ else:
   import winsound
 import select
 
-global serverName
+serverName = ""
  
 def openNewWindow():
+  global serverName
   newWindow = Toplevel(window)
   newWindow.title(serverName)
 def click():

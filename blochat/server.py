@@ -25,7 +25,7 @@ except:
 server.listen(10)
 def clientThread(conn, addr):
   global clients
-  conn.send(f"Entered chatroom: {name}")
+  conn.send(bytes(f"Entered chatroom: {name}", "utf-8"))
   while True:
     try:
       message = conn.recv(2048)
