@@ -5,9 +5,9 @@ import socket
 def click():
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    if server_ip.find(':') == -1 or server_ip.length() - 1 == server_ip.find(':'):
+    if server_ip.indexOf(':') == -1 or server_ip.length() - 1 == server_ip.indexOf(':'):
       invalidip("No port found.")
-    server_port = int(server_ip[server_ip.find(':') + 1:])
+    server_port = int(server_ip[server_ip.indexOf(':') + 1:])
     try:
       server.connect((server_ip, server_port))
     except:
@@ -17,10 +17,18 @@ def launchserver():
   import blochat.server
 
 
+
 window = Tk()
 window.title("Blochat")
 window.configure(background="black")
-
+def invalidip(err):
+  Label(
+    window,
+    text=err,
+    bg="black",
+    fg="red",
+    font="none 14 bold").grid(
+        row=4, column=0, sticky=N)
 Button(
     window, text="Server Mode", width=10, command=launchserver).grid(
         row=0, column=10, sticky=W)
