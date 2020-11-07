@@ -28,7 +28,7 @@ def invalidip(err):
   if sys.platform.startswith("linux"):
     playsound.playsound("CTX/err.wav")
   else:
-    winsound.PlaySound("CTX/err.wav")
+    winsound.PlaySound("CTX/err.wav", winsound.SND_FILENAME)
   Label(
     window,
     text=err,
