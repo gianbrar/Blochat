@@ -37,7 +37,7 @@ Label(
     bg="black",
     fg="white",
     font="none 20 bold").grid(
-        row=2, column=0, sticky=W)
+        row=2, column=0, sticky=N)
 
 tBg = ""
 if sys.platform.startswith("linux"):
@@ -49,4 +49,4 @@ textbloch = Entry(window, width=40, bg=tBg)
 textbloch.grid(row=3, column=0, sticky=N)
 Button(
     window, text="Join", width=10, command=click).grid(
-        row=3, column=1, sticky=N)
+        row=3, column=1, sticky=W)
