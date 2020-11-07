@@ -5,7 +5,7 @@
       */ """
 
 import sys
-import blochat.server as server
+import blochat.server as Server
 from blochat.visual import *
 
 """" QUBIT STATES GUIDE:
@@ -14,9 +14,9 @@ from blochat.visual import *
 
 if len(sys.argv) > 1:
   if sys.argv[1] == "-s" or sys.argv[1] == "--server":
-    server.runServer()
-    server.conn.close()
-    server.server.close()
+    Server.runServer()
+    Server.conn.close()
+    Server.server.close()
     exit()
   elif sys.argv[1] == "-u" or sys.argv[1] == "--user":
     window.mainloop()
