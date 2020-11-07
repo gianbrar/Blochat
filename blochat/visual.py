@@ -6,7 +6,11 @@ if sys.platform.startswith("linux"):
 else:
   import winsound
 
+<<<<<<< Updated upstream
 global serverName
+=======
+import select
+>>>>>>> Stashed changes
 
 def click():
     server_ip = textbloch.get()
@@ -23,13 +27,18 @@ def click():
     first = True
     while True:
       sockets = [None, server]
-      readS, writeS, errS = select.select(sockets_list,[],[])
+      readS, writeS, errS = select.select(sockets,[],[])
       for Socket in readS:
         if Socket == server:
+<<<<<<< Updated upstream
           msg = Sock.recv(2048)
           if first == True:
             first = False
             serverName = msg[msg.find(":") + 1:]
+=======
+          msg = Socket.recv(2048)
+          outputMessage(msg)
+>>>>>>> Stashed changes
         else:
           msg = getUserMessage()
           server.send(msg)
@@ -89,3 +98,4 @@ textbloch.grid(row=3, column=0, sticky=N)
 Button(
     window, text="Join", width=10, command=click).grid(
         row=3, column=1, sticky=W)
+
