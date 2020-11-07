@@ -19,12 +19,15 @@ window = Tk()
 window.title("Blochat")
 window.configure(background="black")
 
+Button(
+    window, text="Server Mode", width=10, command=launchserver).grid(
+        row=0, column=10, sticky=W)
 photo1 = PhotoImage(file="IMG/blochat_icon_small.png")
-Label(window, image=photo1, bg="black").grid(row=0, column=0, sticky=W)
+Label(window, image=photo1, bg="black").grid(row=1, column=0, sticky=W)
 
 Label(
     window, text="Blochat", bg="black", fg="white", font="none 60 bold").grid(
-        row=0, column=1, sticky=S)
+        row=1, column=1, sticky=S)
 
 Label(
     window,
@@ -32,7 +35,7 @@ Label(
     bg="black",
     fg="white",
     font="none 20 bold").grid(
-        row=1, column=0, sticky=W)
+        row=2, column=0, sticky=W)
 
 tBg = ""
 if sys.platform.startswith("linux"):
@@ -41,7 +44,7 @@ else:
   tBg = "white"
 
 textbloch = Entry(window, width=40, bg=tBg)
-textbloch.grid(row=2, column=0, sticky=N)
+textbloch.grid(row=3, column=0, sticky=N)
 Button(
     window, text="Join", width=10, command=click).grid(
-        row=2, column=1, sticky=N)
+        row=3, column=1, sticky=N)
