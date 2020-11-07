@@ -1,13 +1,13 @@
 from tkinter import *
 import socket
-
+import playsound
 
 def click():
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    if server_ip.indexOf(':') == -1 or server_ip.length() - 1 == server_ip.indexOf(':'):
+    if server_ip.find(':') == -1 or server_ip.length() - 1 == server_ip.find(':'):
       invalidip("No port found.")
-    server_port = int(server_ip[server_ip.indexOf(':') + 1:])
+    server_port = int(server_ip[server_ip.find(':') + 1:])
     try:
       server.connect((server_ip, server_port))
     except:
@@ -22,6 +22,7 @@ window = Tk()
 window.title("Blochat")
 window.configure(background="black")
 def invalidip(err):
+  playsound.playsound("CTX/err.wav")
   Label(
     window,
     text=err,
