@@ -16,10 +16,10 @@ if len(sys.argv) > 1:
 else:
   port = input("> Enter port #\n> ")
 
-print(f"IP detected as {socket.gethostname()}")
+print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
 
 try:
-  server.bind((socket.gethostname(), int(port)))
+  server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
 except:
   print("ERROR: Faulty hostname and/or port.")
 
