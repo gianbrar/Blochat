@@ -16,6 +16,8 @@ if len(sys.argv) > 1:
 else:
   port = input("> Enter port #\n> ")
 
+print(f"IP detected as {socket.gethostname()}")
+
 try:
   server.bind((socket.gethostname(), int(port)))
 except:
