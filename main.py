@@ -18,7 +18,10 @@ if len(sys.argv) > 1:
     server.conn.close()
     server.server.close()
     exit()
-  elif not (sys.argv[1] == "-u" or sys.argv[1] == "--user"):
+  elif sys.argv[1] == "-u" or sys.argv[1] == "--user":
+    window.mainloop()
+  else:
     print("Ignoring unrecognized flag...")
-
-window.mainloop()
+    window.mainloop()
+else:
+  window.mainloop()
