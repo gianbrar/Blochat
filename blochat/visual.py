@@ -24,7 +24,7 @@ window.configure(background="black")
 Button(
     window, text="Server Mode", width=10, command=launchserver).grid(
         row=0, column=10, sticky=W)
-photo1 = PhotoImage(file="IMG/blochat_icon_small.png")
+photo1 = PhotoImage(file="CTX/blochat_icon_small.png")
 Label(window, image=photo1, bg="black").grid(row=1, column=0, sticky=W)
 
 Label(
