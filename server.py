@@ -1,5 +1,6 @@
 import socket
 import sys
+import _thread
 
 print("> Blochat Server Client activated.")
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,8 +16,10 @@ if len(sys.argv) > 1:
 else:
   port = input("> Enter port #\n> ")
 
+print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
+
 try:
-  server.bind((socket.gethostname(), int(port)))
+  server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
 except:
   print("ERROR: Faulty hostname and/or port.")
 
@@ -37,3 +40,12 @@ def clientThread(conn, addr):
             clients.remove(client)
     except:
       continue
+
+while True:
+  conn, addr = server.accept()
+  clients.append(conn)
+  print(f"{addr[0]} joined the server.")
+  _thread.start_new_thread(clientThread(conn, addr))
+
+conn.close()
+server.close()
