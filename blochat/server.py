@@ -5,23 +5,21 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 name = ""
 clients = []
 
-def initServer():
-  global name
-  print("> Blochat Server Client activated.")
-  server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-  port = 0
+print("> Blochat Server Client activated.")
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+port = 0
 
-  name = input("> Create server name\n> ")
-  if name == "":
-    name = socket.gethostname()
-  port = input("> Enter port #\n> ")
+name = input("> Create server name\n> ")
+if name == "":
+  name = socket.gethostname()
+port = input("> Enter port #\n> ")
 
-  print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
+print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
 
-  try:
-    server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
-  except:
-    print("ERROR: Faulty hostname and/or port.")
+try:
+  server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
+except:
+  print("ERROR: Faulty hostname and/or port.")
 
 server.listen(10)
 def clientThread(conn, addr):
@@ -42,11 +40,11 @@ def clientThread(conn, addr):
     except:
       continue
 
-def runServer():
-  global clients
-  initServer()
-  while True:
-    conn, addr = server.accept()
-    clients.append(conn)
-    print(f"{addr[0]} joined the server.")
-    _thread.start_new_thread(clientThread(conn, addr))
+while True:
+  conn, addr = server.accept()
+  clients.append(conn)
+  print(f"{addr[0]} joined the server.")
+  _thread.start_new_thread(clientThread(conn, addr))
+
+conn.close()
+server.close()

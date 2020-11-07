@@ -5,7 +5,6 @@
       */ """
 
 import sys
-import blochat.server as Server
 from blochat.visual import *
 
 """" QUBIT STATES GUIDE:
@@ -14,14 +13,11 @@ from blochat.visual import *
 
 if len(sys.argv) > 1:
   if sys.argv[1] == "-s" or sys.argv[1] == "--server":
-    Server.runServer()
-    Server.conn.close()
-    Server.server.close()
-    exit()
+    import blochat.server
   elif sys.argv[1] == "-u" or sys.argv[1] == "--user":
     window.mainloop()
   else:
-    print("Ignoring unrecognized flag...")
-    window.mainloop()
+    print("Unrecognized flag.")
+    exit()
 else:
   window.mainloop()
