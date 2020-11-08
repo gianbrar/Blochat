@@ -7,13 +7,13 @@ def bellPair(circuit, x, y):
     circuit.cx(x, y)
             
 def encrypt(circuit, qbit, bits):
-    if msg == "10":
+    if bits == "10":
         circuit.x(qbit)
-    elif msg == "01":
+    elif bits == "01":
         circuit.z(qbit)
-    elif msg == "11":
-        circuit.z(qubit)
-        circuit.x(qubit)
+    elif bits == "11":
+        circuit.z(qbit)
+        circuit.x(qbit)
     else:
         pass
 

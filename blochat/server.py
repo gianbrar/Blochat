@@ -46,12 +46,16 @@ def clientThread(conn, addr):
   while True:
     try:
       message = conn.recv(2048)
+      message = list(message)
       formatMsg = ''
-      for i in message:
-          decrypt(message[i], 0, 1)
-          formatMsg += str(message[i].clbits)
-          print(formatMsg)
-      if message != '':
+      if not isinstance(message, str):
+          for i in message:
+            decrypt(message[i], 0, 1)
+            formatMsg += str(message[i].clbits)
+            print(formatMsg)
+      else:
+          formatMsg = message
+      if formatMsg != '':
         if len(message.split()) > 1:
             if message.startswith("/name"):
                 name = message.split()[1]

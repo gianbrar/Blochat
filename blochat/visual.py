@@ -2,6 +2,7 @@ from tkinter import *
 import blochat.quantum as q
 import socket
 import sys
+import _thread
 if sys.platform.startswith("linux"):
   import playsound
 else:
@@ -54,11 +55,15 @@ def nameSelect():
   name = nameField.get()
   openChatWindow()
   nameWindow.destroy()
+  serverLoop()
   
+
+global server
 
 def click():
     global serverName
     global name
+    global server
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     if server_ip.find(':') == -1 or len(server_ip) - 1 == server_ip.find(':'):
@@ -72,26 +77,28 @@ def click():
       return
     first = True
     openNameWindow()
+def serverLoop():
+    global server
     while True:
       sockets = [None, server]
-      try:
-          readS, writeS, errS = select.select(sockets,[],[])
-      except:
-          pass
+      readS, writeS, errS = select.select(sockets,[],[])
       for Socket in readS:
         if Socket == server:
           msg = Socket.recv(2048)
           if first:
             first = False
             serverName = msg[msg.find(":") + 1:]
-            server.send(f"/name {name}")
+            server.sendall(f"/name {name}")
           msg = Socket.recv(2048)
           outputMessage(msg)
-        else:
-          msg = userInput
+        
+def awaitInput(msg):
+    global server
+    if True:
+          print('test')
           if msg.startswith("/help"):
               outputMessage("> [ SYS.local ]: Command List:\n/help: Brings up this message.\n/circuit [-c {circuit name} {# of qubits in circuit}] [-g [X, h, z] {circuit name}] [-l]")
-              continue
+              return
           sMsg = msg.split()
           if len(sMsg) > 1:
               if msg.startswith("/circuit"):
@@ -104,7 +111,7 @@ def click():
                         q.circuitList[sMsg[3]] = q.circuitList[sMsg[3]].h
                       elif sMsg[2].lower() == 'z':
                         q.circuitList[sMsg[3]] = q.circuitList[sMsg[3]].z
-                      continue
+                      return
                   elif sMsg[1] == "-l":
                       catCircuit = ''
                       for i in q.circuitList:
@@ -112,24 +119,22 @@ def click():
                       outputMessage(f"> [ SYS.local ]: {catCircuit}")
           QMsg = q.toBinary(msg)
           messageCircuit = []
-          for i in q.sep(2, QMsg):
+          for i in range(len(q.sep(2, QMsg))):
               messageCircuit.append(q.QuantumCircuit(2))
               q.bellPair(messageCircuit[i], 0, 1)
               q.encrypt(messageCircuit[i], 0, q.sep(2, QMsg)[i])
-          server.send(messageCircuit)
+          server.sendall(bytearray(messageCircuit))
           outputMessage(f"> [ YOU ]: {msg}")
 
 
 def launchserver():
   import blochat.server
-
 def outputMessage(msg):
-  print("test")
   listbox.insert(END, msg) 
 def getUserMessage():
   global userInput
   userInput = chatbox.get()
-  outputMessage(userInput) 
+  awaitInput(userInput)
 
 window = Tk()
 window.title("Blochat")
