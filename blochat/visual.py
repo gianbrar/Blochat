@@ -13,6 +13,8 @@ def openNewWindow():
   global serverName
   newWindow = Toplevel(window)
   newWindow.title(serverName)
+  newWindow.configure(background='#1D3557')
+  
 def click():
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,7 +34,7 @@ def click():
       readS, writeS, errS = select.select(sockets,[],[])
       for Socket in readS:
         if Socket == server:
-          msg = Sock.recv(2048)
+          msg = Socket.recv(2048)
           if first == True:
             first = False
             serverName = msg[msg.find(":") + 1:]
@@ -71,6 +73,9 @@ def invalidip():
 Button(
     window, text="Server Mode", width=10, command=launchserver).grid(
         row=0, column=10, sticky=W)
+Button(
+    window, text="Dev Mode", width=10, command=openNewWindow).grid(
+        row=0, column=0, sticky=W)
 photo1 = PhotoImage(file="CTX/blochat_icon_small.png")
 Label(window, image=photo1, bg="#1D3557").grid(row=1, column=0, sticky=W)
 
