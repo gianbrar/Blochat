@@ -8,13 +8,27 @@ else:
 import select
 
 serverName = ""
- 
-def openNewWindow():
+name = ""
+nameField = None
+
+def openNameWindow():
   global serverName
-  newWindow = Toplevel(window)
-  newWindow.title(serverName)
-  newWindow.configure(background='#1D3557')
-  
+  global nameField
+  nameWindow = Toplevel(window)
+  nameWindow.title(serverName)
+  nameWindow.configure(background='#1D3557')
+  nameField = Entry(nameWindow, width=40, bg=tBg)
+  Label(nameWindow, text="Enter Your Name", bg="#1D3557", fg='white', font="none 14 bold") .grid(row=0, column=0, sticky=N)
+  nameField.grid(row=1, column=0, sticky=E)
+  Button(
+  nameWindow, text="Enter", width=8, command=nameSelect).grid(
+  row=1, column=1, sticky=W)
+      
+def nameSelect():
+  global nameField
+  name = nameField.get()
+  print(name)
+
 def click():
     global serverName
     server_ip = textbloch.get()
@@ -29,7 +43,7 @@ def click():
       invalidip()
       return
     first = True
-    openNewWindow()
+    openNameWindow()
     while True:
       sockets = [None, server]
       readS, writeS, errS = select.select(sockets,[],[])
@@ -76,7 +90,7 @@ Button(
     window, text="Server Mode", width=10, command=launchserver).grid(
         row=0, column=10, sticky=W)
 Button(
-    window, text="Dev Mode", width=10, command=openNewWindow).grid(
+    window, text="Dev Mode", width=10, command=openNameWindow).grid(
         row=0, column=0, sticky=W)
 photo1 = PhotoImage(file="CTX/blochat_icon_small.png")
 Label(window, image=photo1, bg="#1D3557").grid(row=1, column=0, sticky=W)
@@ -104,4 +118,4 @@ textbloch.grid(row=3, column=0, sticky=N)
 Button(
     window, text="Join", width=10, command=click).grid(
         row=3, column=1, sticky=W)
-      
+
