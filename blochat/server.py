@@ -46,6 +46,7 @@ def clientThread(conn, addr):
   while True:
     try:
       message = conn.recv(2048)
+      for i in q.decrypt()
       formatMsg = ''
       if message != '':
         if len(message.split()) > 1:
