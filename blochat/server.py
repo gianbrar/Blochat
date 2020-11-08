@@ -1,5 +1,6 @@
 import socket
 import _thread
+from requests import get
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 name = ""
@@ -13,11 +14,23 @@ name = input("> Create server name\n> ")
 if name == "":
   name = socket.gethostname()
 port = input("> Enter port #\n> ")
-
-print(f"IP detected as {socket.gethostbyname(socket.gethostname())}")
-
+wl = input("> Use link (l) or IP (i)? [default i]\n> ")
+if wl.lower() == 'l':
+    try:
+        url = socket.gethostbyname(input("> Enter URL ('www.google.com' format)\n> "))
+    except:
+        print("ERROR: Host resolution failed.")
+        exit()
+else:
+    ie = input("> Form IPv4 (i) or IPv6 (e) connection? [default i]\n> ")
+    if ie.lower() == 'e':
+        sIP = get("https://api.ipify.org").text
+    else:
+        sIP = socket.gethostbyname(socket.gethostname())
+print(f"IP detected as {sIP}")
+    
 try:
-  server.bind((socket.gethostbyname(socket.gethostname()), int(port)))
+  server.bind((sIP, int(port)))
 except:
   print("ERROR: Faulty hostname and/or port.")
   exit()
@@ -29,8 +42,10 @@ def clientThread(conn, addr):
   while True:
     try:
       message = conn.recv(2048)
-      formatMsg = f"> [ {addr[0]} ]: {message}"
-      print(formatMsg)
+      formatMsg = ''
+      if message != '':
+        formatMsg = f"> [ {addr[0]} ]: {message}"
+        print(formatMsg)
       for client in clients:
         if client != conn:
           try:
@@ -38,13 +53,15 @@ def clientThread(conn, addr):
           except:
             client.close()
             clients.remove(client)
+            conn.send(f"> {addr[0]} left the server.")
     except:
       continue
 
 while True:
   conn, addr = server.accept()
   clients.append(conn)
-  print(f"{addr[0]} joined the server.")
+  print(f"> JOIN:   {addr[0]}")
+  conn.send(f"> {addr[0]} joined the server.")
   _thread.start_new_thread(clientThread(conn, addr))
 
 conn.close()
