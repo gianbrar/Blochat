@@ -89,22 +89,33 @@ def click():
         else:
           msg = userInput
           if msg.startswith("/help"):
-              outputMessage("> [ SYS.local ]: Command List:\n/help: Brings up this message.\n/circuit [-c {circuit name} {# of qubits in circuit}] [-g [X, h, z] {circuit name}]")
+              outputMessage("> [ SYS.local ]: Command List:\n/help: Brings up this message.\n/circuit [-c {circuit name} {# of qubits in circuit}] [-g [X, h, z] {circuit name}] [-l]")
               continue
           sMsg = msg.split()
           if len(sMsg) > 1:
               if msg.startswith("/circuit"):
-                  if sMsg[1].startswith("-c"):
+                  if sMsg[1] == "-c":
                     q.circuitList[sMsg[1]] = q.QuantumCircuit(int(sMsg[2]))
-                  elif sMsg[1].startswith("-g"):
+                  elif sMsg[1] == "-g":
                       if sMsg[2].upper() == 'X':
-                        q.circuitList[sMsg[3]] = circuitList[sMsg[3]].x
+                        q.circuitList[sMsg[3]] = q.circuitList[sMsg[3]].x
                       elif sMsg[2].lower() == 'h':
-                        q.circuitList[sMsg[3]] = circuitList[sMsg[3]].h
+                        q.circuitList[sMsg[3]] = q.circuitList[sMsg[3]].h
                       elif sMsg[2].lower() == 'z':
-                        q.circuitList[sMsg[3]] = circuitList[sMsg[3]].z
-                  continue
-          server.send(msg)
+                        q.circuitList[sMsg[3]] = q.circuitList[sMsg[3]].z
+                      continue
+                  elif sMsg[1] == "-l":
+                      catCircuit = ''
+                      for i in q.circuitList:
+                          catCircuit += i
+                      outputMessage(f"> [ SYS.local ]: {catCircuit}")
+          QMsg = q.toBinary(msg)
+          messageCircuit = []
+          for i in q.sep(2, QMsg):
+              messageCircuit.append(q.QuantumCircuit(2))
+              q.bellPair(messageCircuit[i], 0, 1)
+              q.encrypt(messageCircuit[i], 0, q.sep(2, QMsg)[i])
+          server.send(messageCircuit)
           outputMessage(f"> [ YOU ]: {msg}")
 
 
