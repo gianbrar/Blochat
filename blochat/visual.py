@@ -1,4 +1,5 @@
 from tkinter import *
+import blochat.quantum as q
 import socket
 import sys
 if sys.platform.startswith("linux"):
@@ -48,7 +49,10 @@ def click():
     openNameWindow()
     while True:
       sockets = [None, server]
-      readS, writeS, errS = select.select(sockets,[],[])
+      try:
+          readS, writeS, errS = select.select(sockets,[],[])
+      except:
+          pass
       for Socket in readS:
         if Socket == server:
           msg = Socket.recv(2048)
@@ -56,12 +60,28 @@ def click():
             first = False
             serverName = msg[msg.find(":") + 1:]
             server.send(f"/name {name}")
-          msg = Socket.recv(2048) 
+          msg = Socket.recv(2048)
           outputMessage(msg)
         else:
-          msg = getUserMessage()
+          msg = userInput
+          if msg.startswith("/help"):
+              outputMessage("> [ SYS.local ]: Command List:\n/help: Brings up this message.\n/circuit [-c {circuit name} {# of qubits in circuit}] [-g [X, h, z] {circuit name}]")
+              continue
+          sMsg = msg.split()
+          if len(sMsg) > 1:
+              if msg.startswith("/circuit"):
+                  if sMsg[1].startswith("-c"):
+                    q.circuitList[sMsg[1]] = q.QuantumCircuit(int(sMsg[2]))
+                  elif sMsg[1].startswith("-g"):
+                      if sMsg[2].upper() == 'X':
+                        q.circuitList[sMsg[3]] = circuitList[sMsg[3]].x
+                      elif sMsg[2].lower() == 'h':
+                        q.circuitList[sMsg[3]] = circuitList[sMsg[3]].h
+                      elif sMsg[2].lower() == 'z':
+                        q.circuitList[sMsg[3]] = circuitList[sMsg[3]].z
+                  continue
           server.send(msg)
-          outputMessage("> [ YOU ]: " + msg)
+          outputMessage(f"> [ YOU ]: {msg}")
 
 
 def launchserver():
