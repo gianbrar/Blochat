@@ -26,11 +26,13 @@ def openNameWindow():
       
 def nameSelect():
   global nameField
-  name = nameField.get()
-  print(name)
+  global name
+  name = nameField.get())
+  nameField.destroy()
 
 def click():
     global serverName
+    global name
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     if server_ip.find(':') == -1 or len(server_ip) - 1 == server_ip.find(':'):
@@ -53,7 +55,7 @@ def click():
           if first:
             first = False
             serverName = msg[msg.find(":") + 1:]
-            server.send(""
+            server.send(f"/name {name}")
           msg = Socket.recv(2048) 
           outputMessage(msg)
         else:

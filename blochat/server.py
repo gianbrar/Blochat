@@ -5,13 +5,14 @@ from requests import get
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 name = ""
 clients = []
+addrN = []
 
 print("> Blochat Server Client activated.")
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 port = 0
 
 name = input("> Create server name\n> ")
-if name == "":
+if not name:
   name = socket.gethostname()
 port = input("> Enter port #\n> ")
 wl = input("> Use link (l) or IP (i)? [default i]\n> ")
@@ -35,16 +36,25 @@ except:
   print("ERROR: Faulty hostname and/or port.")
   exit()
 
-server.listen(10)
+server.listen(10) # arbitrary number; change at any time
 def clientThread(conn, addr):
   global clients
+  global name
   conn.send(bytes(f"Entered chatroom: {name}", "utf-8"))
+  first = True
   while True:
     try:
+      uname = addr[0]
       message = conn.recv(2048)
       formatMsg = ''
       if message != '':
-        formatMsg = f"> [ {addr[0]} ]: {message}"
+        if message.startswith("/name") and len(message.split()) > 1:
+            name = message.split()[1]
+        if first:
+            first = False
+            formatMsg = f"> {uname} joined the server."
+        else:
+            formatMsg = f"> [ {uname} ]: {message}"
         print(formatMsg)
       for client in clients:
         if client != conn:
@@ -53,15 +63,13 @@ def clientThread(conn, addr):
           except:
             client.close()
             clients.remove(client)
-            conn.send(bytes(f"> {addr[0]} left the server.", "utf-8")
+            conn.send(bytes(f"> {uname} left the server.", "utf-8"))
     except:
       continue
 
 while True:
   conn, addr = server.accept()
   clients.append(conn)
-  print(f"> JOIN:   {addr[0]}")
-  conn.send(bytes(f"> {addr[0]} joined the server.", "utf-8"))
   _thread.start_new_thread(clientThread(conn, addr))
 
 conn.close()
