@@ -16,6 +16,7 @@ def openNewWindow():
   newWindow.configure(background='#1D3557')
   
 def click():
+    global serverName
     server_ip = textbloch.get()
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     if server_ip.find(':') == -1 or len(server_ip) - 1 == server_ip.find(':'):
@@ -35,16 +36,17 @@ def click():
       for Socket in readS:
         if Socket == server:
           msg = Socket.recv(2048)
-          if first == True:
+          if first:
             first = False
             serverName = msg[msg.find(":") + 1:]
+            server.send(""
           msg = Socket.recv(2048) 
           outputMessage(msg)
         else:
           msg = getUserMessage()
           server.send(msg)
           outputMessage("> [ YOU ]: " + msg)
-      
+
 
 def launchserver():
   import blochat.server

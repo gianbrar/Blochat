@@ -53,7 +53,7 @@ def clientThread(conn, addr):
           except:
             client.close()
             clients.remove(client)
-            conn.send(f"> {addr[0]} left the server.")
+            conn.send(bytes(f"> {addr[0]} left the server.", "utf-8")
     except:
       continue
 
@@ -61,7 +61,7 @@ while True:
   conn, addr = server.accept()
   clients.append(conn)
   print(f"> JOIN:   {addr[0]}")
-  conn.send(f"> {addr[0]} joined the server.")
+  conn.send(bytes(f"> {addr[0]} joined the server.", "utf-8"))
   _thread.start_new_thread(clientThread(conn, addr))
 
 conn.close()
