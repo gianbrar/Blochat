@@ -1,11 +1,11 @@
 import socket
 import _thread
+import blochat.quantum
 from requests import get
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 name = ""
 clients = []
-addrN = []
 
 print("> Blochat Server Client activated.")
 server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -42,14 +42,15 @@ def clientThread(conn, addr):
   global name
   conn.send(bytes(f"Entered chatroom: {name}", "utf-8"))
   first = True
+  uname = addr[0]
   while True:
     try:
-      uname = addr[0]
       message = conn.recv(2048)
       formatMsg = ''
       if message != '':
-        if message.startswith("/name") and len(message.split()) > 1:
-            name = message.split()[1]
+        if len(message.split()) > 1:
+            if message.startswith("/name"):
+                name = message.split()[1]
         if first:
             first = False
             formatMsg = f"> {uname} joined the server."
