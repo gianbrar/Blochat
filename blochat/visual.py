@@ -29,10 +29,10 @@ def openChatWindow():
   listbox.place(x=50,y=0)
   scrollbar.config(command=listbox.yview)
   chatbox = Entry(chatWindow, width=20, bg=tBg)
-  chatbox.place(x=50,y=170)
+  chatbox.place(x=50,y=180)
   Button(
-  chatWindow, text="Enter", width=8, command=getUserMessage).place(x=80,y=200)
-
+  chatWindow, text="Enter", width=8, command=getUserMessage).place(x=80,y=220)
+  chatWindow.geometry("275x250")
 def openNameWindow():
   global serverName
   global nameField
@@ -54,6 +54,7 @@ def nameSelect():
   name = nameField.get()
   openChatWindow()
   nameWindow.destroy()
+  
 
 def click():
     global serverName
@@ -124,11 +125,11 @@ def launchserver():
 
 def outputMessage(msg):
   print("test")
-
+  listbox.insert(END, msg) 
 def getUserMessage():
   global userInput
   userInput = chatbox.get()
-
+  outputMessage(userInput) 
 
 window = Tk()
 window.title("Blochat")
