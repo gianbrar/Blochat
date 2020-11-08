@@ -11,12 +11,34 @@ import select
 serverName = ""
 name = ""
 nameField = None
+listbox = None
+userInput = ""
+
+def openChatWindow():
+  global serverName
+  global listbox
+  global chatbox
+  chatWindow = Toplevel(window)
+  chatWindow.title(serverName)
+  chatWindow.configure(background='#1D3557')
+  scrollbar = Scrollbar(chatWindow)
+  scrollbar.pack(side=RIGHT, fill=Y)
+  listbox = Listbox(chatWindow, yscrollcommand=scrollbar.set)
+  listbox.insert(END, "Welcome To The Chat")
+  '''listbox.pack(side=LEFT, fill=X)'''
+  listbox.place(x=50,y=0)
+  scrollbar.config(command=listbox.yview)
+  chatbox = Entry(chatWindow, width=20, bg=tBg)
+  chatbox.place(x=50,y=170)
+  Button(
+  chatWindow, text="Enter", width=8, command=getUserMessage).place(x=80,y=200)
 
 def openNameWindow():
   global serverName
   global nameField
+  global nameWindow
   nameWindow = Toplevel(window)
-  nameWindow.title(serverName)
+  nameWindow.title("Name")
   nameWindow.configure(background='#1D3557')
   nameField = Entry(nameWindow, width=40, bg=tBg)
   Label(nameWindow, text="Enter Your Name", bg="#1D3557", fg='white', font="none 14 bold") .grid(row=0, column=0, sticky=N)
@@ -24,12 +46,14 @@ def openNameWindow():
   Button(
   nameWindow, text="Enter", width=8, command=nameSelect).grid(
   row=1, column=1, sticky=W)
-      
+  
+
 def nameSelect():
   global nameField
   global name
-  name = nameField.get())
-  nameField.destroy()
+  name = nameField.get()
+  openChatWindow()
+  nameWindow.destroy()
 
 def click():
     global serverName
@@ -91,7 +115,9 @@ def outputMessage(msg):
   print("test")
 
 def getUserMessage():
-  print("test")
+  global userInput
+  userInput = chatbox.get()
+
 
 window = Tk()
 window.title("Blochat")
